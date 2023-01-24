@@ -33,8 +33,9 @@ func GetVideoFrame(FullPath string) int {
 	stdout.Read(tmp)
 	t := string(tmp)
 	t = replace.Replace(t)
-	if atoi, err := strconv.Atoi(t); err == nil {
-		return atoi
+	if frame, err := strconv.Atoi(t); err == nil {
+		log.Debug.Printf("文件帧数约%d\n", frame)
+		return frame
 	}
 	log.Warn.Println("读取文件帧数出错")
 	return 0
