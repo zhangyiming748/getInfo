@@ -1,12 +1,17 @@
-packages getInfo
-import(
+package getInfo
+
+import (
 	"github.com/zhangyiming748/log"
 	"github.com/zhangyiming748/replace"
 	"os/exec"
 	"strconv"
 )
-func GetVideoFrame(){
-	cmd := exec.Command("ffprobe", "-v", "error", "-count_frames", "-select_streams", "v:0", "-show_entries", "stream=nb_read_frames", "-of", "default=nokey=1:noprint_wrappers=1", f.FullPath)
+
+/*
+获取视频文件的帧数
+*/
+func GetVideoFrame(FullPath string) int {
+	cmd := exec.Command("ffprobe", "-v", "error", "-count_frames", "-select_streams", "v:0", "-show_entries", "stream=nb_read_frames", "-of", "default=nokey=1:noprint_wrappers=1", FullPath)
 	/*
 		> -v error:这隐藏了"info"输出(版本信息等),使解析更容易.
 		> -count_frames:计算每个流的帧数,并在相应的流部分中报告.
