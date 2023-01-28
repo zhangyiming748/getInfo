@@ -40,3 +40,10 @@ func GetVideoFrame(FullPath string) int {
 	log.Warn.Println("读取文件帧数出错")
 	return 0
 }
+
+/*
+获取大于1080P的视频
+*/
+func GetOutOfFHD() {
+	// /Users/zen/Downloads/Telegram Desktop/Nier/2B
+}
