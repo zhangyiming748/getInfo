@@ -130,7 +130,7 @@ func BiggerThenFHD(file string) bool {
 		log.Warn.Printf("获取宽高度失败,文件名:%v\n", file)
 	}
 	if outOfFHD(Width, Height) {
-		log.Debug.Printf("获取到大于FHD的视频:%v\n", file)
+		log.Debug.Printf("获取到大于FHD的视频:%v\t宽:%d\t高:%d\n", file,Width,Height)
 		return true
 	} else {
 		log.Debug.Printf("不是大于FHD的视频\n")
