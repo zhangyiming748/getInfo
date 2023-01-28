@@ -1,6 +1,7 @@
 package getInfo
 
 import (
+	"github.com/zhangyiming748/getInfo/util"
 	"github.com/zhangyiming748/log"
 	"github.com/zhangyiming748/replace"
 	"os/exec"
@@ -44,6 +45,29 @@ func GetVideoFrame(FullPath string) int {
 /*
 获取大于1080P的视频
 */
-func GetOutOfFHD() {
-	// /Users/zen/Downloads/Telegram Desktop/Nier/2B
+func GetOutOfFHD(dir, pattern string) {
+	fs := util.GetMultiFiles(dir, pattern)
+	for _, file := range fs {
+		md, err := util.GetMediaInfo(file.FullPath)
+		if err != nil {
+			return
+		}
+		var (
+			Width  int
+			Height int
+		)
+
+		if Width, err = strconv.Atoi(md.Media.Track[1].Width); err != nil {
+			log.Warn.Printf("获取宽度失败,文件名:%v\n", file.FullPath)
+		}
+		if Height, err = strconv.Atoi(md.Media.Track[1].Height); err != nil {
+			log.Warn.Printf("获取宽高度失败,文件名:%v\n", file.FullPath)
+		}
+		if util.MoreThenFHD(Width, Height) {
+			// TODO 生成报告
+			log.Debug.Printf("获取到大于FHD的视频:%v\n", file.FullPath)
+		} else {
+			log.Debug.Printf("不是大于FHD的视频\n")
+		}
+	}
 }

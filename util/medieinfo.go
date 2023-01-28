@@ -100,8 +100,10 @@ func GetMediaInfo(absPath string) (MediaInfo, error) {
 		fmt.Println("ReadAll Stdout:", err.Error())
 		return MediaInfo{}, err
 	} else {
+		//log.Debug.Printf("命令输出内容:%v\n", string(bytes))
 		if err := json.Unmarshal(bytes, &md); err != nil {
-			return MediaInfo{}, err
+			log.Warn.Println("解析json错误")
+			return md, err
 		}
 	}
 
@@ -109,4 +111,10 @@ func GetMediaInfo(absPath string) (MediaInfo, error) {
 		log.Debug.Panicf("命令执行中有错误产生:%v\n", err)
 	}
 	return md, nil
+}
+func MoreThenFHD(Width, Height int) bool {
+	if Width > 1920 && Height > 1920 {
+		return true
+	}
+	return false
 }
