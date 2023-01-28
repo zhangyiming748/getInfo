@@ -48,26 +48,10 @@ func GetVideoFrame(FullPath string) int {
 func GetOutOfFHD(dir, pattern string) {
 	fs := util.GetMultiFiles(dir, pattern)
 	for _, file := range fs {
-		md, err := util.GetMediaInfo(file.FullPath)
-		if err != nil {
-			return
-		}
-		var (
-			Width  int
-			Height int
-		)
-
-		if Width, err = strconv.Atoi(md.Media.Track[1].Width); err != nil {
-			log.Warn.Printf("获取宽度失败,文件名:%v\n", file.FullPath)
-		}
-		if Height, err = strconv.Atoi(md.Media.Track[1].Height); err != nil {
-			log.Warn.Printf("获取宽高度失败,文件名:%v\n", file.FullPath)
-		}
-		if util.MoreThenFHD(Width, Height) {
-			// TODO 生成报告
-			log.Debug.Printf("获取到大于FHD的视频:%v\n", file.FullPath)
+		if util.BiggerThenFHD(file.FullPath) {
+			log.Debug.Printf("大于1080P的文件:%v\n", file.FullPath)
 		} else {
-			log.Debug.Printf("不是大于FHD的视频\n")
+			log.Debug.Printf("小于1080P的文件:%v\n", file.FullPath)
 		}
 	}
 }

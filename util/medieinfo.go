@@ -6,6 +6,7 @@ import (
 	"github.com/zhangyiming748/log"
 	"io"
 	"os/exec"
+	"strconv"
 )
 
 type MediaInfo struct {
@@ -112,7 +113,31 @@ func GetMediaInfo(absPath string) (MediaInfo, error) {
 	}
 	return md, nil
 }
-func MoreThenFHD(Width, Height int) bool {
+func BiggerThenFHD(file string) bool {
+	md, err := GetMediaInfo(file)
+	if err != nil {
+		log.Warn.Panicf("判断文件分辨率出现错误:%v\n", err)
+	}
+	var (
+		Width  int
+		Height int
+	)
+
+	if Width, err = strconv.Atoi(md.Media.Track[1].Width); err != nil {
+		log.Warn.Printf("获取宽度失败,文件名:%v\n", file)
+	}
+	if Height, err = strconv.Atoi(md.Media.Track[1].Height); err != nil {
+		log.Warn.Printf("获取宽高度失败,文件名:%v\n", file)
+	}
+	if outOfFHD(Width, Height) {
+		log.Debug.Printf("获取到大于FHD的视频:%v\n", file)
+		return true
+	} else {
+		log.Debug.Printf("不是大于FHD的视频\n")
+		return false
+	}
+}
+func outOfFHD(Width, Height int) bool {
 	if Width > 1920 && Height > 1920 {
 		return true
 	}
